@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QEventLoop>
+#include <QTimer>
 
 #include "../QtFirmata/qtfirmata.h"
 
@@ -19,7 +20,6 @@ public:
     ~MainWindow();
 
 signals:
-    void signalConnected();
 
 private slots:
     void on_pushButton_clicked();
@@ -27,15 +27,15 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    static const uint8_t panelAddressPin_1 = 19;
-    static const uint8_t panelAddressPin_2 = 18;
-    static const uint8_t panelAddressPin_3 = 2;
-    static const uint8_t panelAddressPin_4 = 3;
+    static const uint8_t panelAddressPin_0 = 19;
+    static const uint8_t panelAddressPin_1 = 18;
+    static const uint8_t panelAddressPin_2 = 2;
+    static const uint8_t panelAddressPin_3 = 3;
 
-    static const uint8_t photoAddressPin_1 = 7;
-    static const uint8_t photoAddressPin_2 = 6;
-    static const uint8_t photoAddressPin_3 = 5;
-    static const uint8_t photoAddressPin_4 = 4;
+    static const uint8_t photoAddressPin_0 = 7;
+    static const uint8_t photoAddressPin_1 = 6;
+    static const uint8_t photoAddressPin_2 = 5;
+    static const uint8_t photoAddressPin_3 = 4;
 
     static const uint8_t measurementRangePin_1 = 8;
     static const uint8_t measurementRangePin_2 = 9;
@@ -48,11 +48,27 @@ private:
     static const uint8_t photoValueMeasurePin = 14;
     static const uint8_t panelCurrentMeasurePin = 15;
 
+
+    //Led panel címek
+    static QList<int> A3Level;
+    static QList<int> A2Level;
+    static QList<int> A1Level;
+    static QList<int> A0Level;
+
+    //fotodióda címzése
+    static QList<int> B3Level;
+    static QList<int> B2Level;
+    static QList<int> B1Level;
+    static QList<int> B0Level;
+
     QtFirmata *firmata;
 
     void connectFirmata();
     void initialize();
-    void setPanelAddress(int panelNum);
+    void setPanelAddress(int plateIndex);
+    void setPhotoAddress(int photoIndex);
+    void setPhotoRange(int rangeNum);
+    void setVoltageAndCurrentLimit(double voltage, double current);
 
 };
 
