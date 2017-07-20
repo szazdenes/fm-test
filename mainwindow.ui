@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>778</width>
+    <height>446</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,9 +18,21 @@
     <item row="0" column="0">
      <widget class="QPushButton" name="pushButton">
       <property name="text">
-       <string>PushButton</string>
+       <string>Test</string>
       </property>
      </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="PlotForm" name="plotWidget_2" native="true"/>
+    </item>
+    <item row="1" column="0">
+     <widget class="PlotForm" name="plotWidget" native="true"/>
+    </item>
+    <item row="2" column="0">
+     <widget class="PlotForm" name="plotWidget_3" native="true"/>
+    </item>
+    <item row="2" column="1">
+     <widget class="PlotForm" name="plotWidget_4" native="true"/>
     </item>
    </layout>
   </widget>
@@ -29,7 +41,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>400</width>
+     <width>778</width>
      <height>22</height>
     </rect>
    </property>
@@ -45,6 +57,14 @@
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>PlotForm</class>
+   <extends>QWidget</extends>
+   <header>plotform.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

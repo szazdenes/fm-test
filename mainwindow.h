@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QEventLoop>
 #include <QTimer>
+#include <QElapsedTimer>
+#include <QThread>
 
 #include "../QtFirmata/qtfirmata.h"
 
@@ -62,6 +64,7 @@ private:
     static QList<int> B0Level;
 
     QtFirmata *firmata;
+    QVector<double> Y_value1, Y_value2, Y_value3, Y_value4, X_value;
 
     void connectFirmata();
     void initialize();

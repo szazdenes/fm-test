@@ -29,15 +29,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     firmata = new QtFirmata("ttyACM0", 57600);
 
-//    connect(this, &MainWindow::signalConnected, this, &MainWindow::initialize);
-
     connectFirmata();
     initialize();
+    firmata->digitalWrite(allowancePin, QtFirmata::DIGITAL_HIGH);
+
 }
 
 MainWindow::~MainWindow()
 {
     firmata->disconnect();
+    delete firmata;
     delete ui;
 }
 
@@ -86,8 +87,8 @@ void MainWindow::initialize()
 void MainWindow::setPanelAddress(int plateIndex)
 {
     if(firmata->available()){
-        if(A0Level.at(plateIndex) == 0) firmata->digitalWrite(panelAddressPin_0, QtFirmata::DIGITAL_LOW);
-        if(A0Level.at(plateIndex) == 1) firmata->digitalWrite(panelAddressPin_0, QtFirmata::DIGITAL_HIGH);
+        if(A0Level.at(plateIndex) == 0) firmata->digitalWrite(panelAddressPin_0, 0);
+        if(A0Level.at(plateIndex) == 1) firmata->digitalWrite(panelAddressPin_0, 1);
         if(A1Level.at(plateIndex) == 0) firmata->digitalWrite(panelAddressPin_1, QtFirmata::DIGITAL_LOW);
         if(A1Level.at(plateIndex) == 1) firmata->digitalWrite(panelAddressPin_1, QtFirmata::DIGITAL_HIGH);
         if(A2Level.at(plateIndex) == 0) firmata->digitalWrite(panelAddressPin_2, QtFirmata::DIGITAL_LOW);
@@ -162,11 +163,32 @@ void MainWindow::setVoltageAndCurrentLimit(double voltage, double current)
 
 void MainWindow::on_pushButton_clicked()
 {
-    firmata->digitalWrite(allowancePin, QtFirmata::DIGITAL_HIGH);
-    if(firmata->available())
-            qDebug("success");
-        else
-            qDebug("failure");
-    setVoltageAndCurrentLimit(10,10);
+    /*setVoltageAndCurrentLimit(25, 10);
+    for(int i = 0; i < 16; i++){
+        setPanelAddress(i);
+        for(int j = 0; j < 100; j++){
+            X_value.append(j);
+            Y_value1.append((double)firmata->analogRead(panelCurrentMeasurePin));
+//            Y_value2.append((double)firmata->digitalRead(panelAddressPin_1));
+//            Y_value3.append((double)firmata->digitalRead(panelAddressPin_2));
+//            Y_value4.append((double)firmata->digitalRead(panelAddressPin_3));
+        }
 
+    }*/
+
+    X_value.clear();
+    Y_value1.clear();
+    QElapsedTimer timer;
+    timer.start();
+
+    while(timer.nsecsElapsed() < 1000000){
+        X_value.append((double)timer.nsecsElapsed());
+        Y_value1.append((double)firmata->analogRead(panelCurrentMeasurePin));
+
+//        if(X_value.size() > 500) X_value.removeFirst();
+//        if(Y_value1.size() > 500) Y_value1.removeFirst();
+        QApplication::processEvents();
+    }
+
+    ui->plotWidget->setPlottingData(QString("test"), X_value, Y_value1, QwtText("x"), QwtText("y"), QColor(Qt::red));
 }

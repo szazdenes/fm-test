@@ -4,9 +4,11 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui svg
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+CONFIG += qwt
 
 TARGET = Firmata_test
 TEMPLATE = app
@@ -29,15 +31,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 INCLUDEPATH += qwt/build/include/
 
-LIBS += qwt/build/lib/libqwt.a \
+LIBS += qwt/lib/libqwt.a \
     -L../QtFirmata/ -lQtFirmata
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    plotform.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    plotform.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    plotform.ui
