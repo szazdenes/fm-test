@@ -87,8 +87,8 @@ void MainWindow::initialize()
 void MainWindow::setPanelAddress(int plateIndex)
 {
     if(firmata->available()){
-        if(A0Level.at(plateIndex) == 0) firmata->digitalWrite(panelAddressPin_0, 0);
-        if(A0Level.at(plateIndex) == 1) firmata->digitalWrite(panelAddressPin_0, 1);
+        if(A0Level.at(plateIndex) == 0) firmata->digitalWrite(panelAddressPin_0, QtFirmata::DIGITAL_LOW);
+        if(A0Level.at(plateIndex) == 1) firmata->digitalWrite(panelAddressPin_0, QtFirmata::DIGITAL_HIGH);
         if(A1Level.at(plateIndex) == 0) firmata->digitalWrite(panelAddressPin_1, QtFirmata::DIGITAL_LOW);
         if(A1Level.at(plateIndex) == 1) firmata->digitalWrite(panelAddressPin_1, QtFirmata::DIGITAL_HIGH);
         if(A2Level.at(plateIndex) == 0) firmata->digitalWrite(panelAddressPin_2, QtFirmata::DIGITAL_LOW);
@@ -163,8 +163,8 @@ void MainWindow::setVoltageAndCurrentLimit(double voltage, double current)
 
 void MainWindow::on_pushButton_clicked()
 {
-    /*setVoltageAndCurrentLimit(25, 10);
-    for(int i = 0; i < 16; i++){
+//    setVoltageAndCurrentLimit(25, 10);
+    /*for(int i = 0; i < 16; i++){
         setPanelAddress(i);
         for(int j = 0; j < 100; j++){
             X_value.append(j);
@@ -178,12 +178,22 @@ void MainWindow::on_pushButton_clicked()
 
     X_value.clear();
     Y_value1.clear();
+    Y_value2.clear();
+    Y_value3.clear();
+    Y_value4.clear();
+
     QElapsedTimer timer;
     timer.start();
+    int microsec = 200000;
 
-    while(timer.nsecsElapsed() < 1000000){
-        X_value.append((double)timer.nsecsElapsed());
+    while(timer.nsecsElapsed() < microsec*1000){
+        X_value.append((double)timer.nsecsElapsed()/1000.0);
         Y_value1.append((double)firmata->analogRead(panelCurrentMeasurePin));
+        Y_value2.append((double)firmata->analogRead(photoValueMeasurePin));
+        Y_value3.append((double)firmata->analogRead(currentLimitPin));
+        Y_value4.append((double)firmata->digitalRead(allowancePin));
+
+
 
 //        if(X_value.size() > 500) X_value.removeFirst();
 //        if(Y_value1.size() > 500) Y_value1.removeFirst();
@@ -191,4 +201,7 @@ void MainWindow::on_pushButton_clicked()
     }
 
     ui->plotWidget->setPlottingData(QString("test"), X_value, Y_value1, QwtText("x"), QwtText("y"), QColor(Qt::red));
+    ui->plotWidget_2->setPlottingData(QString("test"), X_value, Y_value2, QwtText("x"), QwtText("y"), QColor(Qt::red));
+    ui->plotWidget_3->setPlottingData(QString("test"), X_value, Y_value3, QwtText("x"), QwtText("y"), QColor(Qt::red));
+    ui->plotWidget_4->setPlottingData(QString("test"), X_value, Y_value4, QwtText("x"), QwtText("y"), QColor(Qt::red));
 }
